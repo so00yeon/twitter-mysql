@@ -1,22 +1,36 @@
 package com.example.twittermysql.controller;
 
+import com.example.twittermysql.domain.member.dto.MemberDto;
 import com.example.twittermysql.domain.member.dto.RegisterMemberCommand;
-import com.example.twittermysql.domain.member.entity.Member;
+import com.example.twittermysql.domain.member.service.MemberReadService;
 import com.example.twittermysql.domain.member.service.MemberWriteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
+@RequestMapping("/members")
 @RestController
 public class MemberController {
 
     final private MemberWriteService memberWriteService;
+    final private MemberReadService memberReadService;
 
-    @PostMapping("/members")
-    public Member register(@RequestBody RegisterMemberCommand command) {
-        return memberWriteService.create(command);
+    @PostMapping()
+    public MemberDto register(@RequestBody RegisterMemberCommand command) {
+        var member = memberWriteService.register(command);
+        return memberReadService.toDto(member);
+    }
+
+    @GetMapping("/{id}")
+    public MemberDto getMember(@PathVariable Long id) {
+        var member = memberReadService
+                .getMember(id);
+        return memberReadService.toDto(member);
     }
 
 }
