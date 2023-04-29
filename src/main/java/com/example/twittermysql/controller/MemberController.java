@@ -33,4 +33,12 @@ public class MemberController {
         return memberReadService.toDto(member);
     }
 
+    @PostMapping("/{id}/name")
+    public MemberDto changeNickname(@PathVariable Long id, @RequestBody String nickname) {
+        memberWriteService.changeNickname(id, nickname);
+        var member = memberReadService
+                .getMember(id);
+        return memberReadService.toDto(member);
+    }
+
 }

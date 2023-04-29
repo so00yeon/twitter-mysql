@@ -35,7 +35,14 @@ public class Member {
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
-    void validateNickname(String nickname) {
-        Assert.isTrue(nickname.length() <= NAME_MAX_LENGTH, "닉네임의 최대 길이는 "+NAME_MAX_LENGTH+"자 입니다.");
+    private void validateNickname(String nickname) {
+        Assert.isTrue(nickname.length() <= NAME_MAX_LENGTH,
+                "닉네임의 최대 길이는 " + NAME_MAX_LENGTH + "자 입니다.");
+    }
+
+    public void changeNickname(String to) {
+        Objects.requireNonNull(to);
+        validateNickname(to);
+        nickname = to;
     }
 }
