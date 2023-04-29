@@ -3,9 +3,11 @@ package com.example.twittermysql.domain.member.repository;
 import com.example.twittermysql.domain.member.entity.MemberNicknameHistory;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -25,6 +27,12 @@ public class MemberNicknameHistoryRepository {
             .nickname(resultSet.getString("nickname"))
             .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
             .build();
+
+    public List<MemberNicknameHistory> findAllByMemberId(Long memberId) {
+        var sql = String.format("SELECT * FROM %s WHERE memberId = :memberId", TABLE);
+        var params = new MapSqlParameterSource().addValue("memberId", memberId);
+        return namedParameterJdbcTemplate.query(sql, params, rowMapper);
+    }
 
 
     public MemberNicknameHistory save(MemberNicknameHistory history) {

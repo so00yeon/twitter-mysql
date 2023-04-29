@@ -1,9 +1,11 @@
 package com.example.twittermysql.controller;
 
 import com.example.twittermysql.domain.member.dto.MemberDto;
+import com.example.twittermysql.domain.member.dto.MemberNicknameHistoryDto;
 import com.example.twittermysql.domain.member.dto.RegisterMemberCommand;
 import com.example.twittermysql.domain.member.service.MemberReadService;
 import com.example.twittermysql.domain.member.service.MemberWriteService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,4 +43,8 @@ public class MemberController {
         return memberReadService.toDto(member);
     }
 
+    @GetMapping("/{memberId}/nickname-histories")
+    public List<MemberNicknameHistoryDto> getNicknameHistories(@PathVariable Long memberId) {
+        return memberReadService.getNicknameHistories(memberId);
+    }
 }
