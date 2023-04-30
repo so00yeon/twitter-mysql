@@ -1,4 +1,4 @@
-package com.example.twittermysql.controller;
+package com.example.twittermysql.application.usecase.controller;
 
 import com.example.twittermysql.domain.member.dto.MemberDto;
 import com.example.twittermysql.domain.member.dto.MemberNicknameHistoryDto;
