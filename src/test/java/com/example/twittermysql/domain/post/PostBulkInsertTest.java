@@ -23,8 +23,10 @@ public class PostBulkInsertTest {
                 LocalDate.of(2023, 2, 1)
         );
 
-        IntStream.range(0, 10)
+        var posts = IntStream.range(0, 10)
                 .mapToObj(i -> easyRandom.nextObject(Post.class))
-                .forEach(x -> postRepository.save(x));
+                .toList();
+
+        postRepository.bulkInsert(posts);
     }
 }
