@@ -3,12 +3,16 @@ package com.example.twittermysql.application.controller;
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
 import com.example.twittermysql.domain.post.dto.DailyPostCountRequest;
 import com.example.twittermysql.domain.post.dto.PostCommand;
+import com.example.twittermysql.domain.post.entity.Post;
 import com.example.twittermysql.domain.post.service.PostReadService;
 import com.example.twittermysql.domain.post.service.PostWriteService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +33,13 @@ public class PostController {
     @GetMapping("/daily-post-counts")
     public List<DailyPostCount> getDailyPostCount(@RequestBody DailyPostCountRequest request) {
         return postReadService.getDailyPostCount(request);
+    }
+
+    @GetMapping("/members/{memberId}")
+    public Page<Post> getPosts(
+            @PathVariable Long memberId,
+            Pageable pageable
+    ) {
+        return postReadService.getPosts(memberId, pageable);
     }
 }
