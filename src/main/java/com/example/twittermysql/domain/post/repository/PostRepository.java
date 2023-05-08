@@ -32,6 +32,7 @@ public class PostRepository {
             .id(resultSet.getLong("id"))
             .memberId(resultSet.getLong("memberId"))
             .contents(resultSet.getString("contents"))
+            .createdDate(resultSet.getObject("createdDate", LocalDate.class))
             .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
             .build();
 
@@ -42,13 +43,12 @@ public class PostRepository {
     );
 
     public List<DailyPostCount> groupByCreatedDate(DailyPostCountRequest request) {
-        String CREATE_DATE = "DATE_FORMAT(createdAt,'%Y-%m-%d')";
         var sql = String.format("""
-                SELECT %s createdDate, memberId, count(id) as count
+                SELECT createdDate, memberId, count(id) as count
                 FROM %s
-                WHERE memberId = :memberId and createdAt between :firstDate and :lastDate
+                WHERE memberId = :memberId and createdDate between :firstDate and :lastDate
                 GROUP BY memberId, createdDate
-                """, CREATE_DATE, TABLE);
+                """, TABLE);
         var params = new BeanPropertySqlParameterSource(request);
         return namedParameterJdbcTemplate.query(sql, params, DAILY_POST_COUNT_MAPPER);
     }
@@ -122,8 +122,8 @@ public class PostRepository {
 
     public void bulkInsert(List<Post> posts) {
         var sql = String.format("""
-                INSERT INTO `%s` (memberId, contents, createdAt)
-                VALUES (:memberId, :contents, :createdAt)
+                INSERT INTO `%s` (memberId, contents, createdDate, createdAt)
+                VALUES (:memberId, :contents, :createdDate, :createdAt)
                 """, TABLE);
 
         SqlParameterSource[] params = posts
@@ -145,6 +145,7 @@ public class PostRepository {
                 .id(id)
                 .memberId(post.getMemberId())
                 .contents(post.getContents())
+                .createdDate(post.getCreatedDate())
                 .createdAt(post.getCreatedAt()).build();
     }
 }
