@@ -6,6 +6,8 @@ import com.example.twittermysql.domain.post.dto.PostCommand;
 import com.example.twittermysql.domain.post.entity.Post;
 import com.example.twittermysql.domain.post.service.PostReadService;
 import com.example.twittermysql.domain.post.service.PostWriteService;
+import com.example.twittermysql.util.CursorRequest;
+import com.example.twittermysql.util.PageCursor;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +43,13 @@ public class PostController {
             Pageable pageable
     ) {
         return postReadService.getPosts(memberId, pageable);
+    }
+
+    @GetMapping("/members/{memberId}/by-cursor")
+    public PageCursor<Post> getPostsByCursor(
+            @PathVariable Long memberId,
+            CursorRequest cursorRequest
+    ) {
+        return postReadService.getPosts(memberId, cursorRequest);
     }
 }
