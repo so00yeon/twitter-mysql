@@ -1,5 +1,6 @@
 package com.example.twittermysql.application.controller;
 
+import com.example.twittermysql.application.usecase.CreatePostUsecase;
 import com.example.twittermysql.application.usecase.GetTimelinePostsUsecase;
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
 import com.example.twittermysql.domain.post.dto.DailyPostCountRequest;
@@ -28,10 +29,11 @@ public class PostController {
     final private PostWriteService postWriteService;
     final private PostReadService postReadService;
     final private GetTimelinePostsUsecase getTimelinePostsUsecase;
+    final private CreatePostUsecase createPostUsecase;
 
-    @PostMapping()
+    @PostMapping("")
     public Long create(PostCommand command) {
-        return postWriteService.create(command);
+        return createPostUsecase.execute(command);
     }
 
     @GetMapping("/daily-post-counts")

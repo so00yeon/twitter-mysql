@@ -174,7 +174,7 @@ public class PostRepository {
         namedParameterJdbcTemplate.batchUpdate(sql, params);
     }
 
-    public Post insert(Post post) {
+    private Post insert(Post post) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(
                 namedParameterJdbcTemplate.getJdbcTemplate()).withTableName(TABLE)
                 .usingGeneratedKeyColumns("id");
