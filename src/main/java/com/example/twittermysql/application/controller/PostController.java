@@ -57,11 +57,19 @@ public class PostController {
         return postReadService.getPosts(memberId, cursorRequest);
     }
 
+//    @GetMapping("/member/{memberId}/timeline")
+//    public PageCursor<Post> getTimeline(
+//            @PathVariable Long memberId,
+//            CursorRequest cursorRequest
+//    ) {
+//        return getTimelinePostsUsecase.execute(memberId, cursorRequest);
+//    }
+
     @GetMapping("/member/{memberId}/timeline")
     public PageCursor<Post> getTimeline(
             @PathVariable Long memberId,
             CursorRequest cursorRequest
     ) {
-        return getTimelinePostsUsecase.execute(memberId, cursorRequest);
+        return getTimelinePostsUsecase.executeByTimeline(memberId, cursorRequest);
     }
 }
