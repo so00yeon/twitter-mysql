@@ -1,5 +1,6 @@
 package com.example.twittermysql.application.controller;
 
+import com.example.twittermysql.application.usecase.GetTimelinePostsUsecase;
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
 import com.example.twittermysql.domain.post.dto.DailyPostCountRequest;
 import com.example.twittermysql.domain.post.dto.PostCommand;
@@ -26,6 +27,7 @@ public class PostController {
 
     final private PostWriteService postWriteService;
     final private PostReadService postReadService;
+    final private GetTimelinePostsUsecase getTimelinePostsUsecase;
 
     @PostMapping()
     public Long create(PostCommand command) {
@@ -51,5 +53,13 @@ public class PostController {
             CursorRequest cursorRequest
     ) {
         return postReadService.getPosts(memberId, cursorRequest);
+    }
+
+    @GetMapping("/member/{memberId}/timeline")
+    public PageCursor<Post> getTimeline(
+            @PathVariable Long memberId,
+            CursorRequest cursorRequest
+    ) {
+        return getTimelinePostsUsecase.execute(memberId, cursorRequest);
     }
 }
