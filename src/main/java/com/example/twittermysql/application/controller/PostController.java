@@ -6,6 +6,7 @@ import com.example.twittermysql.application.usecase.GetTimelinePostsUsecase;
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
 import com.example.twittermysql.domain.post.dto.DailyPostCountRequest;
 import com.example.twittermysql.domain.post.dto.PostCommand;
+import com.example.twittermysql.domain.post.dto.PostDto;
 import com.example.twittermysql.domain.post.entity.Post;
 import com.example.twittermysql.domain.post.service.PostReadService;
 import com.example.twittermysql.domain.post.service.PostWriteService;
@@ -45,7 +46,7 @@ public class PostController {
     }
 
     @GetMapping("/members/{memberId}")
-    public Page<Post> getPosts(
+    public Page<PostDto> getPosts(
             @PathVariable Long memberId,
             Pageable pageable
     ) {

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -23,6 +24,16 @@ public class PostLikeRepository {
             .postId(resultSet.getLong("postId"))
             .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
             .build();
+
+    public Long count(Long postId) {
+        var sql = String.format("""
+                SELECT count(id)
+                FROM %s
+                WHERE postId = :postId
+                """, TABLE);
+        var params = new MapSqlParameterSource().addValue("postId", postId);
+        return namedParameterJdbcTemplate.queryForObject(sql, params, Long.class);
+    }
 
     public PostLike save(PostLike postLike) {
         if (postLike.getId() == null) {

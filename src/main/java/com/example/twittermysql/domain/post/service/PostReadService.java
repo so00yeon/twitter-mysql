@@ -2,7 +2,9 @@ package com.example.twittermysql.domain.post.service;
 
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
 import com.example.twittermysql.domain.post.dto.DailyPostCountRequest;
+import com.example.twittermysql.domain.post.dto.PostDto;
 import com.example.twittermysql.domain.post.entity.Post;
+import com.example.twittermysql.domain.post.repository.PostLikeRepository;
 import com.example.twittermysql.domain.post.repository.PostRepository;
 import com.example.twittermysql.util.CursorRequest;
 import com.example.twittermysql.util.PageCursor;
@@ -17,13 +19,22 @@ import org.springframework.stereotype.Service;
 public class PostReadService {
 
     final private PostRepository postRepository;
+    final private PostLikeRepository postLikeRepository;
+
+    public PostDto toDto(Post post) {
+        return new PostDto(post.getId(),
+                post.getMemberId(),
+                post.getContents(),
+                postLikeRepository.count(post.getId()),
+                post.getCreatedAt());
+    }
 
     public List<DailyPostCount> getDailyPostCount(DailyPostCountRequest request) {
         return postRepository.groupByCreatedDate(request);
     }
 
-    public Page<Post> getPosts(Long memberId, Pageable pageable) {
-        return postRepository.findAllByMemberId(memberId, pageable);
+    public Page<PostDto> getPosts(Long memberId, Pageable pageable) {
+        return postRepository.findAllByMemberId(memberId, pageable).map(this::toDto);
     }
 
     public PageCursor<Post> getPosts(Long memberId, CursorRequest cursorRequest) {
