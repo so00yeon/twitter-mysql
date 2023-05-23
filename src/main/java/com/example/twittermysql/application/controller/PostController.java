@@ -1,6 +1,6 @@
 package com.example.twittermysql.application.controller;
 
-import com.example.twittermysql.application.usecase.CreateLikeUsecase;
+import com.example.twittermysql.application.usecase.CreatePostLikeUsecase;
 import com.example.twittermysql.application.usecase.CreatePostUsecase;
 import com.example.twittermysql.application.usecase.GetTimelinePostsUsecase;
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
@@ -32,7 +32,7 @@ public class PostController {
     final private PostReadService postReadService;
     final private GetTimelinePostsUsecase getTimelinePostsUsecase;
     final private CreatePostUsecase createPostUsecase;
-    final private CreateLikeUsecase createLikeUsecase;
+    final private CreatePostLikeUsecase createPostLikeUsecase;
 
     @PostMapping("")
     public Long create(PostCommand command) {
@@ -84,6 +84,6 @@ public class PostController {
 
     @PostMapping("/{postId}/like/v2")
     public void likePostV2(@PathVariable Long postId, @RequestParam Long memberId) {
-        createLikeUsecase.execute(postId, memberId);
+        createPostLikeUsecase.execute(postId, memberId);
     }
 }

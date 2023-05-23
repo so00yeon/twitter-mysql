@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Like {
+public class PostLike {
 
     final private Long id;
     final private Long memberId;
@@ -14,7 +14,7 @@ public class Like {
     final private LocalDateTime createdAt;
 
     @Builder
-    public Like(Long id, Long memberId, Long postId, LocalDateTime createdAt) {
+    public PostLike(Long id, Long memberId, Long postId, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = Objects.requireNonNull(memberId);
         this.postId = Objects.requireNonNull(postId);
