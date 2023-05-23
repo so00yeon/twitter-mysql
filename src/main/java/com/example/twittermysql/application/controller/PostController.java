@@ -1,5 +1,6 @@
 package com.example.twittermysql.application.controller;
 
+import com.example.twittermysql.application.usecase.CreateLikeUsecase;
 import com.example.twittermysql.application.usecase.CreatePostUsecase;
 import com.example.twittermysql.application.usecase.GetTimelinePostsUsecase;
 import com.example.twittermysql.domain.post.dto.DailyPostCount;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class PostController {
     final private PostReadService postReadService;
     final private GetTimelinePostsUsecase getTimelinePostsUsecase;
     final private CreatePostUsecase createPostUsecase;
+    final private CreateLikeUsecase createLikeUsecase;
 
     @PostMapping("")
     public Long create(PostCommand command) {
@@ -77,5 +80,10 @@ public class PostController {
     public void likePost(@PathVariable Long postId) {
         //postWriteService.likePost(postId);
         postWriteService.likePostByOptimisticLock(postId);
+    }
+
+    @PostMapping("/{postId}/like/v2")
+    public void likePostV2(@PathVariable Long postId, @RequestParam Long memberId) {
+        createLikeUsecase.execute(postId, memberId);
     }
 }
